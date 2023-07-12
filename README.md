@@ -1,4 +1,4 @@
-**완성본 미리보기 : **
+**완성본 미리보기 :**
 
 ![image](https://github.com/YoHaiYo/react---basic-bulletin-board/assets/124754510/f51c5216-60f1-4653-bbb1-28d7bf7fffea)
 
