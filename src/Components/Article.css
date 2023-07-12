@@ -1,0 +1,15 @@
+
+.title{
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.dividing-line{
+  height: 1px;
+  background-color: rgb(143, 143, 143);
+  opacity: 0.3;
+}
+.body{
+  padding: 5px;
+  font-size: 16px;
+}

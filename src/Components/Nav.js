@@ -1,3 +1,5 @@
+import './Nav.css'
+
 const Nav = (props) => {
   const lis = []
   
@@ -14,7 +16,7 @@ const Nav = (props) => {
   } 
 
   return (
-    <nav>
+    <nav className="nav-content">
         <ol>
           {lis}
         </ol>

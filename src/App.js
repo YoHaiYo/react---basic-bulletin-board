@@ -2,7 +2,7 @@
 
 import './App.css';
 import { useState } from 'react';
-import Header from './Components/Header';
+import Home from './Components/Home';
 import Nav from './Components/Nav';
 import Article from './Components/Article';
 import Create from './Components/Create';
@@ -53,28 +53,30 @@ function App() {
     contextControl=
       // <></> : 빈태그로 테그들을 묶어주는 용도
       <>
-        <li>
-            <a href={'/update/'+id} onClick={event=>{
-          event.preventDefault();
-          setMode('UPDATE');
-          }}>게시글 수정</a>
-        </li>
-
-        {/* DELETE는 모드 안쓰고 빈배열로 교체 */}
-        <li>
-          <input type='button' value='게시글 삭제' onClick={()=>{
-          const newTopics = []
-          for(let i=0; i<topics.length; i++){
-            // id가 같지 않은 것들을 빈 배열로 넣어줘서 새로운 배열을 만듦. 
-            // 그 과정에서 id가 같은것(선택한것)은 새 배열에 빠져서 삭제됨.
-            if(topics[i].id !== id){
-              newTopics.push(topics[i]);
+        <div className='wrap-sub-btn'>
+          <div className='sub-btn'>
+              <a href={'/update/'+id} onClick={event=>{
+            event.preventDefault();
+            setMode('UPDATE');
+            }}>게시글 수정</a>
+          </div>
+    
+          {/* DELETE는 모드 안쓰고 빈배열로 교체 */}
+          <div className='sub-btn'>
+            <a onClick={()=>{
+            const newTopics = []
+            for(let i=0; i<topics.length; i++){
+              // id가 같지 않은 것들을 빈 배열로 넣어줘서 새로운 배열을 만듦. 
+              // 그 과정에서 id가 같은것(선택한것)은 새 배열에 빠져서 삭제됨.
+              if(topics[i].id !== id){
+                newTopics.push(topics[i]);
+              }
             }
-          }
-          setTopics(newTopics);
-          setMode('WELCOME');
-          }}/>
-        </li>
+            setTopics(newTopics);
+            setMode('WELCOME');
+            }}>게시글 삭제</a>
+          </div>
+        </div>
       </>
 
   // CREATE 모드
@@ -116,34 +118,38 @@ function App() {
   }
   
   return (
-    <div>
-
-      <Header title="게시판 홈" onChangeMode={()=>{
-        setMode('WELCOME');
-      }}/>
-      <hr></hr>
-
-      <Nav topics = {topics} onChangeMode={(_id)=>{
-        setMode('READ');
-        setId(_id);
-      }}/>
-      <hr></hr>
-
-      {content}
-      <hr></hr>
-
-      <ul>
-        <li>
-          <a href='/create' onClick={event=>{
-          event.preventDefault();
-          setMode('CREATE');
-        }}>글쓰기</a>
-        </li>
-        {contextControl}
-      </ul>
+    <div className='outer-frame'>
       
-      <a href='/'>처음 상태로</a>
 
+        <header>미니 게시판</header>
+
+        
+      <div className='outer-content'>
+        <Nav topics = {topics} onChangeMode={(_id)=>{
+          setMode('READ');
+          setId(_id);
+        }}/>
+        {/* 게시글 내용 */}
+        <div className='content'>{content}</div>        
+      </div>
+
+        {/* 글수정 및 삭제 */}
+        <div className='context-control'>{contextControl}</div>
+        
+        <div className='bottom-nav'>
+          <div className='main-btn'><a href='/'>처음 상태로</a></div>
+
+          <Home title="홈" onChangeMode={()=>{
+            setMode('WELCOME');
+          }}/>
+
+          <div className='main-btn'>
+              <a href='/create' onClick={event=>{
+              event.preventDefault();
+              setMode('CREATE');
+            }}>글쓰기</a>
+          </div>
+        </div>
     </div>
   );
 }
