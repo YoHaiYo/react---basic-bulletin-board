@@ -29,11 +29,15 @@ function App() {
     {id:3, title:"포도", body:`포도는 다발로 자라는 작고 둥근 과일로 다양한 색을 띠며 종종 육즙이 많고 약간 달콤한 맛으로 유명합니다.`}
   ]);
 
-  /// content
+  /// 모드 정의
   let content = null;
   let contextControl = null;
+
+  // WELCOME 모드
   if(mode === 'WELCOME'){
     content = <Article title= "게시판홈입니다." body="어서오세요."/>
+
+  // READ 모드
   } else if (mode === 'READ'){
     let title, body = null;
     for(let i=0; i<topics.length; i++){
@@ -43,25 +47,37 @@ function App() {
         body = topics[i].body;
       }
     }
+    // 읽기 부분임. Article함수로 제목과 내용을 불러옴 
     content = <Article title={title} body={body}/>
+    // contextControl : 게시글 수정, 게시글 삭제를 버튼을 출력
     contextControl=
-    <>
-        <li><a href={'/update/'+id} onClick={event=>{
-        event.preventDefault();
-        setMode('UPDATE');
-      }}>게시글 수정</a></li>
+      // <></> : 빈태그로 테그들을 묶어주는 용도
+      <>
+        <li>
+            <a href={'/update/'+id} onClick={event=>{
+          event.preventDefault();
+          setMode('UPDATE');
+          }}>게시글 수정</a>
+        </li>
 
-      <li><input type='button' value='게시글 삭제' onClick={()=>{
-        const newTopics = []
-        for(let i=0; i<topics.length; i++){
-          if(topics[i].id !== id){
-            newTopics.push(topics[i]);
+        {/* DELETE는 모드 안쓰고 빈배열로 교체 */}
+        <li>
+          <input type='button' value='게시글 삭제' onClick={()=>{
+          const newTopics = []
+          for(let i=0; i<topics.length; i++){
+            // id가 같지 않은 것들을 빈 배열로 넣어줘서 새로운 배열을 만듦. 
+            // 그 과정에서 id가 같은것(선택한것)은 새 배열에 빠져서 삭제됨.
+            if(topics[i].id !== id){
+              newTopics.push(topics[i]);
+            }
           }
-        }
-        setTopics(newTopics);
-        setMode('WELCOME');
-      }}/></li>
-    </>
+          setTopics(newTopics);
+          setMode('WELCOME');
+          }}/>
+        </li>
+      </>
+
+  // CREATE 모드
   } else if (mode === 'CREATE'){
     content = <Create onCreate={(_title, _body)=>{
       const newTopic = {id:nextId, title:_title, body:_body}
@@ -72,6 +88,8 @@ function App() {
       setId(nextId);
       setNextId(nextId+1)
     }}/>
+
+  // UPDATE 모드
   } else if(mode === 'UPDATE'){
     let title, body = null;
     for(let i=0; i<topics.length; i++){
@@ -103,13 +121,16 @@ function App() {
       <Header title="게시판 홈" onChangeMode={()=>{
         setMode('WELCOME');
       }}/>
+      <hr></hr>
 
       <Nav topics = {topics} onChangeMode={(_id)=>{
         setMode('READ');
         setId(_id);
       }}/>
+      <hr></hr>
 
       {content}
+      <hr></hr>
 
       <ul>
         <li>
@@ -120,6 +141,8 @@ function App() {
         </li>
         {contextControl}
       </ul>
+      
+      <a href='/'>처음 상태로</a>
 
     </div>
   );
